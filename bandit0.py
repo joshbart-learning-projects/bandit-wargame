@@ -1,4 +1,8 @@
+import logging
 from pwn import *
+
+logging.basicConfig(format="[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s", filename="./var/log/bandit0-$(date +'%Y-%m-%d').log")
+logger = logging.getLogger(__name__)
 
 host = "bandit.labs.overthewire.org"
 port = 2220
@@ -23,8 +27,11 @@ def collect_password(remote_connection):
     return password
 
 if __name__ == "__main__":
+    logger.info("Initiating connection to the bandit server...")
+    logger.debug(f"Variable value - host: {host}")
     connection = ssh(username, host, port, password)
     if connection.connected():
+        logger.info("Connection established successfully.")
         basic_reconnaissance(connection)
         next_level_password = collect_password(connection)
     connection.close()
