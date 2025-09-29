@@ -27,11 +27,10 @@ def collect_password(remote_connection):
     return password
 
 if __name__ == "__main__":
-    logger.info("Initiating connection to the bandit server...")
-    logger.debug(f"Variable value - host: {host}")
+    logger.debug("Initiating connection to the bandit server; Hostname: %s; Port: %d; Username: %s; Password: %s.", host, port, username, password)
     connection = ssh(username, host, port, password)
     if connection.connected():
-        logger.info("Connection established successfully.")
+        logger.debug("Connection established successfully.")
         basic_reconnaissance(connection)
         next_level_password = collect_password(connection)
     connection.close()
